@@ -49,4 +49,12 @@ emitter.on('event', function thirdListener(...args) {
 });
 
 //按注册顺序同步调用为名为 eventName 的事件注册的每个侦听器，并将提供的参数传递给每个侦听器。 如果事件有侦听器，则返回 true，否则返回 false
-emitter.emit('event',1, 2, 3, 4, 5);  // 发起一个事件
+emitter.emit('event',1, 2, 3, 4, 5);  // 触发事件
+
+
+// 使用继承实现在不同模块监听事件。
+const Logger = HELLO.Logger;
+const logger = new Logger();
+
+logger.on('messageLogged', (args) => console.log('Listener : ' + args.url));
+logger.log();

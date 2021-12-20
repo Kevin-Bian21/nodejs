@@ -19,9 +19,8 @@ console.log(`free memory : ${FreeMemory / Math.pow(1024,3) } GB` );
 //file system
 const fs = require('fs');
 // 同步方法
-// const file = fs.readdirSync('./');
-// console.log(file);
-
+const file = fs.readdirSync('./');
+console.log(file);
 // 异步方法
 fs.readdir('./', function(err, files) {
     if (err)
@@ -29,3 +28,25 @@ fs.readdir('./', function(err, files) {
     else
         console.log(files)
 });
+
+
+// EventEmitter
+const EventEmitter = require('events');
+const emitter = new EventEmitter();
+
+// First listener
+emitter.on('event', function firstListener() {  // on 和 addListener 函数功能一样
+    console.log('Helloooo! first listener');
+});
+  // Second listener
+emitter.on('event', function secondListener(arg1, arg2) {
+    console.log(`event with parameters ${arg1}, ${arg2} in second listener`);
+});
+// Third listener
+emitter.on('event', function thirdListener(...args) {
+    const parameters = args.join(', ');
+    console.log(`event with parameters ${parameters} in third listener`);
+});
+
+//按注册顺序同步调用为名为 eventName 的事件注册的每个侦听器，并将提供的参数传递给每个侦听器。 如果事件有侦听器，则返回 true，否则返回 false
+emitter.emit('event',1, 2, 3, 4, 5);  // 发起一个事件

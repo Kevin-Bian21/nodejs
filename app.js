@@ -61,6 +61,11 @@ logger.log();
 
 
 // http
+const server = http.createServer();
+server.on('connection', (socket, req, res) => console.log('Hello Node'))
+server.listen(2000);
+
+
 const http = require('http');
 http.createServer((req, res) => {
     if (req.url === '/') {
@@ -75,9 +80,3 @@ http.createServer((req, res) => {
 }).listen(3000);
 
 console.log('listening on port 3000...')
-
-
-const server = http.createServer();
-server.on('connection', (socket, req, res) => console.log('Hello Node'))
-server.listen(2000);
-

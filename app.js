@@ -58,3 +58,26 @@ const logger = new Logger();
 
 logger.on('messageLogged', (args) => console.log('Listener : ' + args.url));
 logger.log();
+
+
+// http
+const http = require('http');
+http.createServer((req, res) => {
+    if (req.url === '/') {
+        res.write('Hello World!');
+        res.end();
+    }
+
+    if (req.url === '/api/getPeoples') {
+        res.write(JSON.stringify({1:'Kecin', 2 :'Tom', 3 : 'Jack'}));
+        res.end();
+    }
+}).listen(3000);
+
+console.log('listening on port 3000...')
+
+
+const server = http.createServer();
+server.on('connection', (socket, req, res) => console.log('Hello Node'))
+server.listen(2000);
+

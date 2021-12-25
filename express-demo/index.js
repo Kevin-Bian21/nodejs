@@ -1,3 +1,4 @@
+const debug = require('debug')('app:startup');
 const express = require('express');  // return function
 const Joi = require('joi'); // return Class
 const app = express();
@@ -22,7 +23,7 @@ app.use(function(req, res, next) {
 app.use(helmet());
 //只在开发环境中使用该日志功能
 if (app.get('env') === 'development') {
-    console.log('morgan enable...');
+    debug('morgan enable...');
     app.use(morgan('short'));   // 记录 http 请求日志
 }
 

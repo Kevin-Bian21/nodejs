@@ -27,6 +27,10 @@ if (app.get('env') === 'development') {
     app.use(morgan('short'));   // 记录 http 请求日志
 }
 
+//视图引擎/模板引擎
+app.set('view engine', 'pug');
+app.set('views', './views');  //默认
+
 const courses = [
     {id: 1, name : '数据结构'},
     {id: 2, name : '软件工程'},
@@ -34,7 +38,7 @@ const courses = [
 ];
 
 app.get('/', (req, res) => {
-    res.send('Hello World!!!');
+    res.render('index', {title : 'my express app', message : 'Hello World!'});
 });
 
 app.get('/api/courses', (req, res) => {
@@ -98,13 +102,5 @@ app.delete('/api/courses/:id', (req, res) => {
     res.send(course);
 })
 
-
-
-
-
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`))
-
-for (let i of courses)
-    console.log(i);

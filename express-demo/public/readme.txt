@@ -1,0 +1,1 @@
+Hello , app.use(express.static()); This is static file;

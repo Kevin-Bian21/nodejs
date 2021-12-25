@@ -1,8 +1,30 @@
 const express = require('express');  // return function
 const Joi = require('joi'); // return Class
 const app = express();
+const helmet = require('helmet');
+const morgan = require('morgan');
 
+//中间件
 app.use(express.json());  //开启express获取请求体中JSON对象的功能
+app.use(express.urlencoded({ extended : true }));  // 通过urlencoded格式传递数组或者复杂的表达数据
+app.use(express.static('public')); //向外提供静态内容，如图片，css、html等等  static 方法是从根目录开始起作用的。
+
+//自定义中间件
+app.use(function(req, res, next) {
+    console.log("Logging....");
+    next();
+})
+
+// console.log(process.env.NODE_ENV);
+// console.log(app.get('env'));
+
+//第三方中间件
+app.use(helmet());
+//只在开发环境中使用该日志功能
+if (app.get('env') === 'development') {
+    console.log('morgan enable...');
+    app.use(morgan('short'));   // 记录 http 请求日志
+}
 
 const courses = [
     {id: 1, name : '数据结构'},

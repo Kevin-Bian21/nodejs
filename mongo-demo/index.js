@@ -50,7 +50,8 @@ async function createCourse(){
         const result = await course.save();
         console.log(result);
     } catch (err) {
-        console.log(err.message);
+        for (field in err.errors)  // 遍历输出每个错误
+            console.log(err.errors[field].message);
     }
 }
 

@@ -14,7 +14,8 @@ const coursesSchema = new mongoose.Schema({
     category : {
         type : String,
         required : false,
-        enum : ['web', 'network', 'mobile']
+        enum : ['web', 'network', 'mobile'],
+        lowercase : true
     },
     author : String,
     tags : {
@@ -32,7 +33,11 @@ const coursesSchema = new mongoose.Schema({
         type : Number,
         required : function() {
             return this.isPublish;  // 根据isPublish为true或false来决定是否必须
-        }
+        },
+        min : 10,
+        max : 200,
+        get : v => Math.round(v),   // 数据库中为15.8， 但是获取到的是四舍五入后的值 16
+        set : v => Math.round(v)    // 传入的为 15.8 ，但是往数据库中存的时候四舍五入，数据库中存入 16
     }
 });
 

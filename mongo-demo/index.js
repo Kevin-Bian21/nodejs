@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost/playground')
     .catch(err => console.error('Could not connect to MongoDB'));
 
 const coursesSchema = new mongoose.Schema({
-    name : String,
+    name : { type : String, required : true},  // 校验
     author : String,
     tags : [ String ],
     date : { type : Date, default : Date.now },
@@ -15,17 +15,21 @@ const Course = mongoose.model('Course', coursesSchema);
 
 async function createCourse(){
     const course = new Course({
-        name : '计算机网络',
+        // name : '计算机网络',
         author : 'mosh',
         tags : ['network', 'cs'],
         isPublish : true
     });
 
-    const result = await course.save();
-    console.log(result);
+    try {
+        const result = await course.save();
+        console.log(result);
+    } catch (err) {
+        console.log(err.message);
+    }
 }
 
-// createCourse();
+createCourse();
 
 async function getCourses() {
     // eq (equal)

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { message } = require('../Hello');
 mongoose.connect('mongodb://localhost/playground')
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Could not connect to MongoDB'));
@@ -16,7 +17,15 @@ const coursesSchema = new mongoose.Schema({
         enum : ['web', 'network', 'mobile']
     },
     author : String,
-    tags : [ String ],
+    tags : {
+        type : Array,
+        validate : {  // 自定义验证器
+            validator : function(value) {
+                return value && value.minlength > 0;
+            },
+            message : 'A course should have at last one tag'
+        }
+    },
     date : { type : Date, default : Date.now },
     isPublish : Boolean,
     price : {

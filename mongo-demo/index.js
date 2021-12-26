@@ -4,11 +4,27 @@ mongoose.connect('mongodb://localhost/playground')
     .catch(err => console.error('Could not connect to MongoDB'));
 
 const coursesSchema = new mongoose.Schema({
-    name : { type : String, required : true},  // 校验
+    name : {
+        type : String,
+        required : true,
+        minlength : 2,
+        maxlength : 100
+    },  // 校验
+    category : {
+        type : String,
+        required : false,
+        enum : ['web', 'network', 'mobile']
+    },
     author : String,
     tags : [ String ],
     date : { type : Date, default : Date.now },
-    isPublish : Boolean
+    isPublish : Boolean,
+    price : {
+        type : Number,
+        required : function() {
+            return this.isPublish;  // 根据isPublish为true或false来决定是否必须
+        }
+    }
 });
 
 const Course = mongoose.model('Course', coursesSchema);

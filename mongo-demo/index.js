@@ -53,4 +53,24 @@ async function getCourses() {
     console.log(courses);
 }
 
-getCourses();
+// getCourses();
+
+async function updateCourse(id) {
+    // 更新并返回更新之后的数据
+    const course = await Course.findByIdAndUpdate(id, {
+        $set : {
+            isPublish : false
+        }
+    }, {new : true}); // {new : true} 返回更新后的数据
+    console.log(course);
+}
+
+// updateCourse('61c824ebf0926c9ddc59dd75');
+
+
+async function removeCourse(id) {
+    const course = await Course.findByIdAndDelete({ _id : id });
+    console.log(course);
+}
+
+removeCourse('61c85deed9db13a73f51380c');

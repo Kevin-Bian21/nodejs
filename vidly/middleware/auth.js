@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
+//用户登录之后进行相关操作时再验证用户是否有合法的 token
 function auth(req, res, next) {
     const token = req.header('x-auth-token');
     if (!token)

@@ -2,6 +2,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { boolean } = require('joi');
 
 const userSchema = new mongoose.Schema({
     name : {
@@ -22,11 +23,14 @@ const userSchema = new mongoose.Schema({
         required : true,
         minlength : 5,
         maxlength : 1024,
-    }
+    },
+    isAdmin : boolean
 });
 
+//创建token
 userSchema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id : this._id }, config.get('jwtPrivateKey'));
+    //token中要包含的数据
+    const token = jwt.sign({ _id : this._id, isAdmin : this.isAdmin }, config.get('jwtPrivateKey'));
     return token;
 }
 

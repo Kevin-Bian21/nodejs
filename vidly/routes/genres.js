@@ -5,9 +5,13 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
-router.get('/', async (req, res) => {
-  const genres = await Genre.find().sort('name');
-  res.send(genres);
+router.get('/', async (req, res, next) => {
+  try {
+    const genres = await Genre.find().sort('name');
+    res.send(genres);
+  } catch (err) {
+    next(err);
+  }
 });
 
 //auth:middleware function. 验证当前用户,非注册用户无法使用该功能

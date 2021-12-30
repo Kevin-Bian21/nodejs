@@ -1,3 +1,4 @@
+require('express-async-errors');  // 使用express处理异常的模块可以不用再手动指定相关处理函数了
 const Joi = require('joi');
 const config = require('config');
 Joi.objectId = require('joi-objectid')(Joi);

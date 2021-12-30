@@ -4,18 +4,16 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const asyncMiddleware = require('../middleware/async');
 
-router.get('/', async (req, res, next) => {
-  try {
+
+router.get('/', asyncMiddleware(async (req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-  } catch (err) {
-    next(err);
-  }
-});
+}));
 
 //auth:middleware function. 验证当前用户,非注册用户无法使用该功能
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, asyncMiddleware(async (req, res) => {
 
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -24,7 +22,7 @@ router.post('/', auth, async (req, res) => {
   genre = await genre.save();
 
   res.send(genre);
-});
+}));
 
 router.put('/:id', async (req, res) => {
   const { error } = validate(req.body);

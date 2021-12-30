@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         minlength : 5,
         maxlength : 1024,
     },
-    isAdmin : boolean
+    isAdmin : Boolean
 });
 
 //创建token

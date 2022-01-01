@@ -1,4 +1,5 @@
 const winston = require('winston'); // 日志模块
+require('winston-mongodb');
 
 /*
 错误处理中间件总是需要四个参数。您必须提供四个参数以将其标识为错误处理中间件函数。
@@ -10,8 +11,8 @@ const winston = require('winston'); // 日志模块
 const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, label, printf} = format;
 
-const myFormat = printf(({ level, message, label, timestamp}) => {
-  return `${timestamp} [${label}] ${level}: ${message}`;
+const myFormat = printf(({ level, message, label, timestamp , stack}) => {
+  return `${timestamp} [${label}] ${level}: ${message} ${stack}`;
 });
 
 module.exports = function (err, req, res, next) {
@@ -26,11 +27,13 @@ module.exports = function (err, req, res, next) {
           ),
         transports: [
           new winston.transports.Console(),
-          new winston.transports.File({ filename : './log/error.log'})
+          new winston.transports.File({ filename : './log/error.log'}),
+          new winston.transports.MongoDB({db : 'mongodb://localhost/vidly', level : 'error'})
         ]
     });
 
-    logger.error(err.message);
+    // logger.info(err.message);
+    logger.error(err);
 
     // error
     // warn

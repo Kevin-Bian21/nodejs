@@ -28,6 +28,7 @@
 
 11. 查看全局依赖包`npm -g updated`
 
+12. 只在开发环境中使用该包 `npm i "包名" --save-dev`
 
 nodemon
 helmet
@@ -53,6 +54,7 @@ A**sync and Await**
 mongoose 是一个用于连接 MongoDB 的简单API
 
 ## 3. 模型关系
+joi-object-id:用于验证MongoDB ObjectId格式的Joi扩展
 ```js
 author : {
     type : mongoose.Schema.Types.ObjectId,
@@ -116,9 +118,25 @@ author : [authorSchema]
 7. 异常处理中间件只能捕捉请求处理流程中的异常，任何在程序开始时出现的异常，比如连接到数据库，都不会被捕捉，所以需要自己单独捕捉这些异常情况。
 8. 用process.on('uncaughtException')来捕捉未处理的异常,并且用process.on('unhandleRejection')来捕捉被拒的Promise
 9. 作为最佳实践，当你在事件句柄中用到了process.on,你就应该用日志记录异常并且退出进程,因为你的进程会处在挂起阶段，这会造成很多问题.最好是重启进程恢复它的状态.在生产环境中,使用进程管理来自动重启Node进程.
-10.
 
+## 自动化测试
+1. 单元测试 ：测试应用中的某一部分，不依赖外部资源
+2. 集成测试 ：在测试时伴随着它外部对应的外部依赖资源，测试的是应用代码的集成性，比如数据库、文件系统等
+3. 端到端测试 ：记录用户的操作过程，然后回放测试应用是否能满足要求
 
+4. 常用测试框架
+- Jasmine
+- Mocha [Chai、Sinon]
+- Jest
+### 单元测试
+1. `toBe()` : 匹配时比较的是内存中的位置，所以对于Object类型，应该使用 `toEqual()` 或 `toMatchObject()` 比较对象的一致性
+2. 使用 --watchAll 可以进行不间断的测试
+``` js
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+```
+npm test
 
 ## 体系结构
 

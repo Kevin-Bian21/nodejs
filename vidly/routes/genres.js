@@ -5,6 +5,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const asyncMiddleware = require('../middleware/async');
+const validateObjectId = require('../middleware/validateObjectId');
 
 
 router.get('/', asyncMiddleware(async (req, res) => {
@@ -39,7 +40,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //只有Token验证合法，且是管理员身份，才能执行delete操作
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [ validateObjectId, auth, admin], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id);
 
   if (!genre) return res.status(404).send('The genre with the given ID was not found.');
@@ -47,7 +48,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
   res.send(genre);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',validateObjectId, async (req, res) => {
   const genre = await Genre.findById(req.params.id);
 
   if (!genre) return res.status(404).send('The genre with the given ID was not found.');
